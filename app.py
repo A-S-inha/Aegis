@@ -1,9 +1,14 @@
 import math
+import os
 import time
 
 import streamlit as st
 
 from agents.orchestrator import run
+
+if hasattr(st, "secrets"):
+    for key, val in st.secrets.items():
+        os.environ[key] = val
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -331,7 +336,9 @@ with st.container():
             label_visibility="visible",
         )
 
-total_notional = oil_exposure + gas_exposure + wheat_exposure + copper_exposure + gold_exposure
+total_notional = (
+    oil_exposure + gas_exposure + wheat_exposure + copper_exposure + gold_exposure
+)
 
 portfolio = {
     "exposures": {
@@ -379,18 +386,42 @@ if run_analysis:
 
     stages = [
         ("#ffcc00", "⟳", "Commodity Agent", "fetching live market data...", [], ""),
-        ("#ff6b35", "⟳", "Geo Agent", "scanning geopolitical headlines...",
-         [("#ffcc00", "✓", "Commodity Agent", "complete")], ""),
-        ("#00d4ff", "⟳", "Orchestrator", "computing Global Stress Index...",
-         [("#ffcc00", "✓", "Commodity Agent", "complete"),
-          ("#ff6b35", "✓", "Geo Agent", "complete")], ""),
-        ("#7fff5f", "⟳", "Hedge Agent", "generating tailored strategies...",
-         [("#ffcc00", "✓", "Commodity Agent", "complete"),
-          ("#ff6b35", "✓", "Geo Agent", "complete"),
-          ("#00d4ff", "✓", "Orchestrator", "complete")], ""),
+        (
+            "#ff6b35",
+            "⟳",
+            "Geo Agent",
+            "scanning geopolitical headlines...",
+            [("#ffcc00", "✓", "Commodity Agent", "complete")],
+            "",
+        ),
+        (
+            "#00d4ff",
+            "⟳",
+            "Orchestrator",
+            "computing Global Stress Index...",
+            [
+                ("#ffcc00", "✓", "Commodity Agent", "complete"),
+                ("#ff6b35", "✓", "Geo Agent", "complete"),
+            ],
+            "",
+        ),
+        (
+            "#7fff5f",
+            "⟳",
+            "Hedge Agent",
+            "generating tailored strategies...",
+            [
+                ("#ffcc00", "✓", "Commodity Agent", "complete"),
+                ("#ff6b35", "✓", "Geo Agent", "complete"),
+                ("#00d4ff", "✓", "Orchestrator", "complete"),
+            ],
+            "",
+        ),
     ]
 
-    def render_status(done_stages, active_color, active_icon, active_name, active_detail):
+    def render_status(
+        done_stages, active_color, active_icon, active_name, active_detail
+    ):
         done_html = "".join(
             f"<div style='color:{c}; font-family:Space Mono,monospace; font-size:12px; line-height:2'>"
             f"{icon} &nbsp;{name} — {detail}</div>"
@@ -404,7 +435,8 @@ if run_analysis:
             f"<div style='font-family:Space Mono,monospace;font-size:10px;color:#00d4ff;margin-top:8px'>"
             f"📋 Portfolio loaded: ${total_notional:.0f}M notional across "
             f"{sum(1 for v in portfolio['exposures'].values() if v > 0)} commodities</div>"
-            if total_notional > 0 else ""
+            if total_notional > 0
+            else ""
         )
         return f"""
         <div style='background:#0b1120;border:1px solid #1e2d4a;border-radius:12px;padding:1.5rem;'>
@@ -415,7 +447,10 @@ if run_analysis:
 
     for i, (a_color, a_icon, a_name, a_detail, done, _) in enumerate(stages):
         with status_box.container():
-            st.markdown(render_status(done, a_color, a_icon, a_name, a_detail), unsafe_allow_html=True)
+            st.markdown(
+                render_status(done, a_color, a_icon, a_name, a_detail),
+                unsafe_allow_html=True,
+            )
         time.sleep(1)
 
     try:
@@ -480,7 +515,8 @@ if st.session_state.result is not None:
     if pu_total > 0:
         active = {k: v for k, v in pu_exposures.items() if v > 0}
         tags = "".join(
-            f"<span class='exposure-tag'>{k}: ${v:.0f}M</span>" for k, v in active.items()
+            f"<span class='exposure-tag'>{k}: ${v:.0f}M</span>"
+            for k, v in active.items()
         )
         st.markdown(
             f"""
@@ -530,7 +566,9 @@ if st.session_state.result is not None:
 
     with col3:
         g_color = stress_color(g_score)
-        top_risk_display = (top_risk[:45] + "...") if len(str(top_risk)) > 45 else top_risk
+        top_risk_display = (
+            (top_risk[:45] + "...") if len(str(top_risk)) > 45 else top_risk
+        )
         st.markdown(
             f"""
         <div class='agent-card'>
@@ -573,7 +611,8 @@ if st.session_state.result is not None:
         exposure_badge = (
             f"<div style='font-family:Space Mono,monospace;font-size:9px;color:#00d4ff;"
             f"margin-top:4px'>📋 ${user_exp:.0f}M exposure</div>"
-            if user_exp > 0 else ""
+            if user_exp > 0
+            else ""
         )
 
         with cols[i]:
@@ -620,7 +659,11 @@ if st.session_state.result is not None:
             source = article.get("source", article.get("source_name", ""))
             bucket = article.get("bucket", "")
             relevance = article.get("relevance", "")
-            relevance_color = {"high": "#ff3b5c", "medium": "#ffcc00", "low": "#6a7fa8"}.get(relevance, "#6a7fa8")
+            relevance_color = {
+                "high": "#ff3b5c",
+                "medium": "#ffcc00",
+                "low": "#6a7fa8",
+            }.get(relevance, "#6a7fa8")
             st.markdown(
                 f"""
             <div class='headline-item'>
@@ -636,9 +679,13 @@ if st.session_state.result is not None:
                 unsafe_allow_html=True,
             )
         st.write("")
-        st.markdown("<div class='nova-label'>News risk summary</div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='nova-label'>News risk summary</div>", unsafe_allow_html=True
+        )
         risk_bias = summary.get("risk_bias", "N/A")
-        headline_titles = "; ".join(h.get("title", "") for h in headlines[:3] if h.get("title"))
+        headline_titles = "; ".join(
+            h.get("title", "") for h in headlines[:3] if h.get("title")
+        )
         geo_explanation = f"Risk bias: {risk_bias} (normalized score: {g_score}/100). Top signals: {headline_titles or 'none'}"
         st.markdown(
             f"<div class='overall-rec'>{geo_explanation}</div>",
@@ -676,7 +723,8 @@ if st.session_state.result is not None:
     # ── Hedging Strategies ────────────────────────────────────────────────────
     tailored_note = (
         f" <span style='color:#00d4ff;font-size:10px'>(tailored to your ${pu_total:.0f}M portfolio)</span>"
-        if pu_total > 0 else ""
+        if pu_total > 0
+        else ""
     )
     st.markdown(
         f"<div class='section-header'>DYNAMIC HEDGING STRATEGIES{tailored_note}</div>",
