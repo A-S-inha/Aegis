@@ -288,9 +288,17 @@ def sigmoid_normalize(raw_score, k=0.25):
 # ── Header ────────────────────────────────────────────────────────────────────
 col_logo, col_spacer, col_btn = st.columns([3, 6, 2])
 with col_logo:
+    
     st.markdown("## ⚡ AEGIS")
     st.markdown(
-        "<span style='font-family:Space Mono,monospace;font-size:10px;color:#6a7fa8;letter-spacing:0.15em'>AGENTIC GLOBAL INTELLIGENCE SYSTEM</span>",
+        """
+        <div style='font-family:Space Mono,monospace;font-size:10px;color:#6a7fa8;letter-spacing:0.15em'>
+            AGENTIC GLOBAL INTELLIGENCE SYSTEM
+        </div>
+        <div style='font-size:12px;color:#9bb0d4;margin-top:6px'>
+            Built by Anoushka Sinha and Rushali Dhar
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 with col_btn:
