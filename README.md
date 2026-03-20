@@ -12,7 +12,16 @@ This architecture mirrors how real-world risk desks operate — a commodity quan
 
 ---
 
-🚀 **Live Demo**: [agenticglobalintelligencesystemaegis1.streamlit.app](https://agenticglobalintelligencesystemaegis1.streamlit.app/)
+## 👥 Team
+
+Built for the **Amazon Nova Hackathon** by:
+
+- **[Rushali Dhar](https://github.com/rusha-rashq)** — Purdue University, MS Software Engineering
+- **[Anoushka Sinha](https://github.com/A-S-inha)** — University of Southern California, MS Computer Science
+
+---
+
+🚀 **Live Demo**: https://aegis-app.streamlit.app/
 
 ## 🏗️ System Architecture
 
@@ -247,15 +256,6 @@ Aegis/
 ├── .gitignore
 └── README.md
 ```
-
----
-
-## 👥 Team
-
-Built for the **Amazon Nova Hackathon** by:
-
-- **[Rushali Dhar](https://github.com/rusha-rashq)** — Purdue University, MS Software Engineering
-- **[Anoushka Sinha](https://github.com/A-S-inha)** — University of Southern California, MS Computer Science
 
 ---
 
